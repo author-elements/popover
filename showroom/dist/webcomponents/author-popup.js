@@ -1,6 +1,6 @@
 // Copyright (c) 2019 Author.io. MIT licensed.
-// @author.io/element-popup v1.0.0 available at github.com/author-elements/popup
-// Last Build: 8/7/2019, 9:51:45 PM
+// @author.io/element-popup v1.0.1 available at github.com/author-elements/popup
+// Last Build: 8/7/2019, 10:14:00 PM
 var AuthorPopupElement = (function () {
   'use strict';
 
@@ -122,24 +122,34 @@ var AuthorPopupElement = (function () {
         },
 
         applyHoverListeners: () => {
-          this.PRIVATE.annotatedElement.addEventListener('pointerenter', this.PRIVATE.pointerenterHandler);
-          this.PRIVATE.annotatedElement.addEventListener('pointerleave', this.PRIVATE.pointerleaveHandler);
+          if (this.PRIVATE.annotatedElement) {
+            this.PRIVATE.annotatedElement.addEventListener('pointerenter', this.PRIVATE.pointerenterHandler);
+            this.PRIVATE.annotatedElement.addEventListener('pointerleave', this.PRIVATE.pointerleaveHandler);
+          }
         },
 
         removeHoverListeners: () => {
           this.off('annotated-element.enter', this.PRIVATE.annotatedElementEnterHandler);
           this.off('annotated-element.leave', this.PRIVATE.annotatedElementLeaveHandler);
-          this.PRIVATE.annotatedElement.removeEventListener('pointerenter', this.PRIVATE.pointerenterHandler);
-          this.PRIVATE.annotatedElement.removeEventListener('pointerleave', this.PRIVATE.pointerleaveHandler);
+
+          if (this.PRIVATE.annotatedElement) {
+            this.PRIVATE.annotatedElement.removeEventListener('pointerenter', this.PRIVATE.pointerenterHandler);
+            this.PRIVATE.annotatedElement.removeEventListener('pointerleave', this.PRIVATE.pointerleaveHandler);
+          }
         },
 
         applyClickListeners: () => {
-          this.PRIVATE.annotatedElement.addEventListener('click', this.PRIVATE.clickHandler);
+          if (this.PRIVATE.annotatedElement) {
+            this.PRIVATE.annotatedElement.addEventListener('click', this.PRIVATE.clickHandler);
+          }
         },
 
         removeClickListeners: () => {
           document.removeEventListener('click', this.PRIVATE.documentClickHandler);
-          this.PRIVATE.annotatedElement.removeEventListener('click', this.PRIVATE.clickHandler);
+
+          if (this.PRIVATE.annotatedElement) {
+            this.PRIVATE.annotatedElement.removeEventListener('click', this.PRIVATE.clickHandler);
+          }
         },
 
         clickHandler: evt => {
@@ -215,6 +225,14 @@ var AuthorPopupElement = (function () {
           });
 
           this.hide();
+
+          switch (this.mode) {
+            case 'hover': return this.PRIVATE.applyHoverListeners()
+            case 'click': return this.PRIVATE.applyClickListeners()
+            default: this.UTIL.throwError({
+              message: `Invalid mode "${newValue}". Valid modes: "${this.PRIVATE.validModes.join('", "')}"`
+            });
+          }
         }
       });
     }

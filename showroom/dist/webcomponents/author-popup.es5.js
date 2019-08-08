@@ -1,6 +1,6 @@
 // Copyright (c) 2019 Author.io. MIT licensed.
-// @author.io/element-popup v1.0.0 available at github.com/author-elements/popup
-// Last Build: 8/7/2019, 9:51:45 PM
+// @author.io/element-popup v1.0.1 available at github.com/author-elements/popup
+// Last Build: 8/7/2019, 10:14:00 PM
 var AuthorPopupElement = (function () {
   'use strict';
 
@@ -203,26 +203,34 @@ var AuthorPopupElement = (function () {
           });
         },
         applyHoverListeners: function applyHoverListeners() {
-          _this.PRIVATE.annotatedElement.addEventListener('pointerenter', _this.PRIVATE.pointerenterHandler);
+          if (_this.PRIVATE.annotatedElement) {
+            _this.PRIVATE.annotatedElement.addEventListener('pointerenter', _this.PRIVATE.pointerenterHandler);
 
-          _this.PRIVATE.annotatedElement.addEventListener('pointerleave', _this.PRIVATE.pointerleaveHandler);
+            _this.PRIVATE.annotatedElement.addEventListener('pointerleave', _this.PRIVATE.pointerleaveHandler);
+          }
         },
         removeHoverListeners: function removeHoverListeners() {
           _this.off('annotated-element.enter', _this.PRIVATE.annotatedElementEnterHandler);
 
           _this.off('annotated-element.leave', _this.PRIVATE.annotatedElementLeaveHandler);
 
-          _this.PRIVATE.annotatedElement.removeEventListener('pointerenter', _this.PRIVATE.pointerenterHandler);
+          if (_this.PRIVATE.annotatedElement) {
+            _this.PRIVATE.annotatedElement.removeEventListener('pointerenter', _this.PRIVATE.pointerenterHandler);
 
-          _this.PRIVATE.annotatedElement.removeEventListener('pointerleave', _this.PRIVATE.pointerleaveHandler);
+            _this.PRIVATE.annotatedElement.removeEventListener('pointerleave', _this.PRIVATE.pointerleaveHandler);
+          }
         },
         applyClickListeners: function applyClickListeners() {
-          _this.PRIVATE.annotatedElement.addEventListener('click', _this.PRIVATE.clickHandler);
+          if (_this.PRIVATE.annotatedElement) {
+            _this.PRIVATE.annotatedElement.addEventListener('click', _this.PRIVATE.clickHandler);
+          }
         },
         removeClickListeners: function removeClickListeners() {
           document.removeEventListener('click', _this.PRIVATE.documentClickHandler);
 
-          _this.PRIVATE.annotatedElement.removeEventListener('click', _this.PRIVATE.clickHandler);
+          if (_this.PRIVATE.annotatedElement) {
+            _this.PRIVATE.annotatedElement.removeEventListener('click', _this.PRIVATE.clickHandler);
+          }
         },
         clickHandler: function clickHandler(evt) {
           evt.stopPropagation();
@@ -304,6 +312,20 @@ var AuthorPopupElement = (function () {
           });
 
           _this.hide();
+
+          switch (_this.mode) {
+            case 'hover':
+              return _this.PRIVATE.applyHoverListeners();
+
+            case 'click':
+              return _this.PRIVATE.applyClickListeners();
+
+            default:
+              _this.UTIL.throwError({
+                message: "Invalid mode \"".concat(newValue, "\". Valid modes: \"").concat(_this.PRIVATE.validModes.join('", "'), "\"")
+              });
+
+          }
         }
       });
 

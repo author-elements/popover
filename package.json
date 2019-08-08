@@ -1,6 +1,6 @@
 {
   "name": "@author.io/element-popup",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "author-popup custom element (web component).",
   "main": "dist/author-popup.min.js",
   "scripts": {
