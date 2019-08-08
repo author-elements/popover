@@ -13,16 +13,16 @@ const Demo = new NGNX.VIEW.Registry({
       popup
     } = this.ref
 
-    popup.on('annotated-element.enter', evt => {
-      evt.preventDefault()
-    })
-
-    annotatedElement.on('click', evt => {
-      popup.element.isVisible ? popup.element.hide() : popup.element.show()
-    })
-
-    popup.on('annotated-element.leave', evt => {
-      evt.preventDefault()
-    })
+    // popup.on('annotated-element.enter', evt => {
+    //   evt.preventDefault()
+    // })
+    //
+    // annotatedElement.on('click', evt => {
+    //   popup.element.isVisible ? popup.element.hide() : popup.element.show()
+    // })
+    //
+    // popup.on('annotated-element.leave', evt => {
+    //   evt.preventDefault()
+    // })
   }
 })
